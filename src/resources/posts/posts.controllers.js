@@ -6,8 +6,8 @@ const { body, validationResult } = require('express-validator');
 export const getAll = ()=>
 async (req, res) => {
     const snapshot = await User.get();
-    const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    res.send(list);
+    const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    res.status(200).json(data);
 }
 
 
@@ -20,7 +20,7 @@ async (req, res) => {
         if (data === undefined) {
             res.send({ msg: "no data found" })
         }
-        res.send(data)
+        res.status(200).json(data)
     })
 }
 
@@ -32,9 +32,9 @@ export const getAllByUserId = ()=>
         const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         console.log("snap by id:", req.params.userId, data);
         if (data === undefined) {
-            res.send({ msg: "no data found" })
+            res.status(400).json({"message": "no data found"})
         }
-        res.send(data)
+        res.status(200).json(data)
     })
 }
 
